@@ -1,6 +1,9 @@
 const express = require('express')
 const loginRouter = express.Router()
 
-loginRouter.route('/')
-    .get(LoginPage)
+const Login = require('../Controllers/LoginController')
 
+loginRouter.route('/')
+    .get(Login)
+
+module.exports = loginRouter

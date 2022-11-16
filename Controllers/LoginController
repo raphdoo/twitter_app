@@ -1,0 +1,7 @@
+const express = require('express')
+
+const Login = (req, res, next)=>{
+    res.status(200).render('login')
+}
+
+module.exports = Login
