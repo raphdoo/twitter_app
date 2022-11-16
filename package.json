@@ -1,0 +1,21 @@
+{
+  "name": "twitter_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raphdoo/twitter_app.git"
+  },
+  "keywords": [],
+  "author": "Raphdoo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raphdoo/twitter_app/issues"
+  },
+  "homepage": "https://github.com/raphdoo/twitter_app#readme"
+}
