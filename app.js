@@ -1,8 +1,10 @@
 const express = require('express')
 const app = express()
+const path = require('path')
+const bodyParser = require('body-parser')
 
 const { requireLogin } = require('./middleware/authenticate')
-const LoginRoute = require('./routes/loginRoute')
+const LoginRoute = require('./routes/UserRoute')
 
 const port = 3003
 
@@ -11,7 +13,12 @@ const port = 3003
 app.set("view engine", "pug")
 app.set("views", "views")
 
-app.use('/login', LoginRoute)
+app.use(bodyParser.urlencoded({ extended:false }))
+
+//serving static files
+app.use(express.static(path.join(__dirname, 'public')))
+
+app.use('/', LoginRoute)
 
 app.get('/', requireLogin, (req,res,next)=>{
 

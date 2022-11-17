@@ -1,0 +1,86 @@
+
+body{
+   background-color: white;
+}
+.wrapper{
+    background-color: var(--primary-background-color);
+    margin: 2rem auto;
+    width: 50%;
+    border-radius: 15px;
+}
+.loginContainer_title{
+    text-align: center;
+    font-size: 1.5rem;
+    color: white; 
+}
+.loginContainer_title h2{
+    padding-top: 1.5rem;
+}
+.loginContainer_body{
+    margin:2rem auto;
+    width: 60%;
+    padding-bottom: 2rem;
+    
+}
+.loginContainer_body button{
+    width: 100%;
+    background-color: var(--secondary-button-color);
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.or::after, .or::before{
+    content: '';
+    position: absolute;
+    margin: auto;
+    background-color: var(--secondary-text-color);
+    height: 0.5px;
+    width: 45%;
+    top:45%;
+}
+.or::after{
+    left:0;
+}
+.or::before{
+    right:0;
+}
+.or{
+    position: relative;
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+.loginContainer_form form{
+    display: flex;
+    flex-direction: column;
+}
+input[type="text"], input[type="password"], input[type="submit"], input[type="email"]{
+    margin-bottom: 1rem;
+    border-radius: 25px;
+    padding:0.7rem 1rem;
+    font-size: 1.2rem;
+    background:transparent;
+    border: 1px solid var(--secondary-text-color);
+}
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus{
+    border: 1px solid var(--primary-button-color);
+}
+input[type="Submit"]{
+    margin: 1.2rem 0;
+    background-color: var(--secondary-button-color);
+    color: black;
+    font-weight: 500;
+}
+
+input[type="Submit"]:hover{
+    background-color: #f2f2f2;
+}
+
+.loginContainer_form p{
+    font-size: 1rem;
+}
+
+
+
+
+

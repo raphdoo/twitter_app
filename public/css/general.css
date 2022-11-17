@@ -1,0 +1,35 @@
+:root {
+    --primary-background-color:rgb(19, 19, 19);
+    --secondary-background-color:rgb(32, 30, 30);
+    --primary-button-color: rgb(29, 155, 240);
+    --secondary-button-color: white;
+    --primary-border-color: rgb(33, 33, 33);;
+    --primary-text-color: white;
+    --secondary-text-color: rgb(113, 118, 123);;
+}
+body{
+    color:white;
+    font-size: 12px;
+    background-color: var(--primary-background-color);
+}
+
+input{
+    border:none;
+    outline:none;
+    color: white;
+}
+
+button{
+    background-color: var(--primary-button-color);
+    border-radius: 25px;
+    padding:0.5rem 1rem;
+    
+}
+a{
+    color: var(--primary-button-color);
+    text-decoration: none;
+}
+.errorHandler{
+    text-align: center;
+    color: var(--primary-button-color);
+}
