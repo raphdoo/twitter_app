@@ -4,6 +4,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const Database = require("./database")
 const config = require('./config')
+const session = require('express-session')
 
 const { requireLogin } = require('./middleware/authenticate')
 const LoginRoute = require('./routes/UserRoute')
@@ -22,17 +23,24 @@ app.use(bodyParser.urlencoded({ extended:false }))
 //serving static files
 app.use(express.static(path.join(__dirname, 'public')))
 
+//session configuration
+app.use(session({
+    secret: config.SECRET,
+    resave:true,
+    saveUninitialized:false
+}))
+
 app.use('/', LoginRoute)
 
 app.get('/', requireLogin, (req,res,next)=>{
 
-    const title_payload = {
-        home: "home",
-        Login: "Login"
-
+    //payload object for the home route
+    const payload = {
+        page_title: "home",
+        isLoggedInUser: req.session.user
     }
 
-    res.status(200).render('home', title_payload)
+    res.status(200).render('home', payload)
 })
 
 const server = app.listen(port, ()=>{

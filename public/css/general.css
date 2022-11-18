@@ -3,9 +3,10 @@
     --secondary-background-color:rgb(32, 30, 30);
     --primary-button-color: rgb(29, 155, 240);
     --secondary-button-color: white;
-    --primary-border-color: rgb(33, 33, 33);;
+    --primary-border-color: rgb(33, 33, 33);
     --primary-text-color: white;
-    --secondary-text-color: rgb(113, 118, 123);;
+    --secondary-text-color: rgb(113, 118, 123);
+    --space: 1rem;
 }
 body{
     color:white;

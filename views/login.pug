@@ -12,9 +12,11 @@ block content
             .loginContainer_sepeartor 
             p.or or
             .loginContainer_form
+                p.errorHandler #{errorMessage}
+
                 form(method='post')
-                    input(type='text', name='login_Username', placeholder='Username or email', required='')
-                    input(type='password', name='password', placeholder='Password', required='')
+                    input(type='text', name='Identity', placeholder='Username or email',value=Identity required='')
+                    input(type='password', name='Password', placeholder='Password',value=Password, required='')
                     input(type='submit' value='Log in')
                 p Don't have an accout? 
                     a(href='/register') Signup
