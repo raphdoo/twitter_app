@@ -10,9 +10,9 @@ nav{
 nav a{
     color: white;
     margin-right: 1rem;
-    margin-top: 1rem;
+
     padding: 1rem;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,8 +27,63 @@ nav a:hover{
 }
 .mainSectionContainer{
     border-left: 1px solid var(--primary-border-color);
-    border-right:1px solid var(--primary-bordercolor);
-    padding: var(--space);
+    border-right:1px solid var(--primary-border-color);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.containerTitle{
+    padding: 0 var(--space);
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    
+}
+.containerTitle h5{
+    flex: 1;
+}
+.postFormContainer{
+    display: flex;
+    border-bottom: 1px solid var(--primary-border-color);
+}
+.userImageContainer{
+    padding: 1rem;
+}
+.userImageContainer img{
+    width: 3rem;
+    height: 3rem;
+    background-color: var(primary-background-color);
+    border-radius: 50%;
+    background-color: white;
+
+}
+.textareaContainer{
+    padding: 1rem;
+    width: 100%;
+}
+.textareaContainer textarea{
+    width:100%;
+    border: none;
+    resize:none;
+    font-size: 1.3rem;
+    outline: none;
+    background-color: black;
+    color: white;
+}
+.buttonContainer{
+    display: flex;
+    justify-content: end;
+}
+.buttonContainer button{
+    background-color: var(--primary-button-color);
+    color: white;
+    padding:0.5rem 1.5rem;
+    font-weight: 500;
+}
+.buttonContainer button:disabled{
+    background-color: var(--primary-button-disabled-color);
 }
 
 .widget{

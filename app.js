@@ -36,7 +36,7 @@ app.get('/', requireLogin, (req,res,next)=>{
 
     //payload object for the home route
     const payload = {
-        page_title: "home",
+        page_title: "Home",
         isLoggedInUser: req.session.user
     }
 

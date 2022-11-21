@@ -1,0 +1,8 @@
+mixin createPost(isLoggedInUser)
+    .postFormContainer 
+        .userImageContainer.image-avatar
+            img(src= isLoggedInUser.profilePic, alt="user profile picture", srcset="")
+        .textareaContainer 
+            textarea#postText(placeholder="What's happening")
+            .buttonContainer 
+                button#submitTweet(disabled="") Tweet

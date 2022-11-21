@@ -1,6 +1,4 @@
 extends pagelayout/main-layout.pug
 
-block content 
-    h1 This is Awesome
-
-    p #{isLoggedInUser.Firstname}
+block content
+    +createPost(isLoggedInUser)

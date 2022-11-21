@@ -28,7 +28,7 @@ const UserSchema = new Schema({
     },
     profilePic:{
         type:String,
-        default: 'images/ProfilePic.png'
+        default: "/images/twitter_avatar.png"
     }
 },{
     timestamps:true
