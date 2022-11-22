@@ -29,7 +29,13 @@ const UserSchema = new Schema({
     profilePic:{
         type:String,
         default: "/images/twitter_avatar.png"
-    }
+    },
+    likes:[
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Tweet",
+        }
+    ]
 },{
     timestamps:true
 })

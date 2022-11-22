@@ -7,7 +7,8 @@ const config = require('./config')
 const session = require('express-session')
 
 const { requireLogin } = require('./middleware/authenticate')
-const LoginRoute = require('./routes/UserRoute')
+const UserRoute = require('./routes/UserRoute')
+const TweetRoute = require('./routes/TweetRoute')
 
 const port = config.port
 
@@ -30,7 +31,8 @@ app.use(session({
     saveUninitialized:false
 }))
 
-app.use('/', LoginRoute)
+app.use('/tweet', TweetRoute)
+app.use('/', UserRoute)
 
 app.get('/', requireLogin, (req,res,next)=>{
 
