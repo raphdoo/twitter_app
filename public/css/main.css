@@ -151,13 +151,44 @@ nav a:hover{
     align-items: center;
     background-color: var(--primary-background-color);
     color: var(--secondary-text-color);
+    height:3rem;
+    width: 3rem;
+}
+
+/* Don't register mouse events */
+.postButtonContainer button i,
+.postButtonContainer button span{
+    pointer-events: none;
 }
 .postButtonContainer button:hover{
     background-color: var(--secondary-background-color);
 }
+.likeButton:hover{
+    color: rgb(178, 51, 80)
+}
+.likeButton.active{
+    color: rgb(178, 51, 80)
+}
 
-
-
+.retweetButton.active{
+    color: rgb(45, 198, 45)
+}
+.retweetButton:hover{
+    color: rgb(45, 198, 45)
+}
+.retweet-post-owner{
+    padding-left: 2rem;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    cursor: pointer;
+}
+.retweet-post-owner a{
+    color: var(--secondary-text-color);
+}
+.retweet-post-owner:hover{
+    text-decoration: underline;
+}
 /* Widget Component */
 .widget{
     

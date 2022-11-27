@@ -38,7 +38,8 @@ $("#submitTweet").click((event)=>{
 
 })
 
-// Handling post like button, since, since the button is dynamically created,
+//Like a post
+// Handling post like button. since the button is dynamically created,
 // it is required for the document to load before listening to the click event.
 $(document).on("click", ".likeButton", (event)=>{
     const button = $(event.target);
@@ -49,10 +50,43 @@ $(document).on("click", ".likeButton", (event)=>{
         url: `/tweet/${postId}/like`,
         type: "PUT",
         success: ((postData)=>{
-            console.log(postData.likes.length)
+            button.find("span").text(postData.likes.length || "") //realtime update of the like button without having to refresh
+        
+            //checking if user had liked the post
+            if(postData.likes.includes(userLoggedIn._id)){
+                button.addClass("active");
+            }else{
+                button.removeClass("active") //adding custom color to like button
+            }
         })
+
     })
 
+})
+
+//Retweet
+$(document).on("click", ".retweetButton", (event)=>{
+    const button = $(event.target);
+    const postId = getPostIdFromElement(button)
+
+    //ajax call to update the retweet endpoint in the server
+    $.ajax({
+        url: `/tweet/${postId}/retweet`,
+        type: "POST",
+        success: ((postData)=>{
+            button.find("span").text(postData.retweetUsers.length || "") //realtime update of the  button without having to refresh
+        
+            //checking if user had retweeted the post
+            if(postData.retweetUsers.includes(userLoggedIn._id)){
+                button.addClass("active");
+            }else{
+                button.removeClass("active") //adding custom color to retweet button
+            }
+
+        })
+
+    })
+    console.log()
 })
 
 //get to the root or parent element to retrieve the tweet id stored in the data-id
@@ -67,10 +101,32 @@ function getPostIdFromElement(element) {
 
 //create the tweet container
 function createTweet(postData){
+    // //handling retweeted tweets
+    if(postData == null) return alert("tweet is null");
+
+    let isRetweet = postData.content == undefined;
+
+    let retweetBy = isRetweet ? postData.postedBy.Username : null
+
+    // //setting postData to retweet data if tweet is a retweet, else treat as postData if its a new post
+    postData = isRetweet ? postData.retweetData[0] : postData;
+
     const postedBy = postData.postedBy
     const timestamp = timeDifference(new Date(), new Date(postData.createdAt))
+
     
+    //adding active class to icons for styling
+    const likedTweetActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
+    const retweetActiveClass = postData.retweetUsers.includes(userLoggedIn._id) ? "active" : "";
+    console.log(retweetBy)
+    let retweetText = ""
+    if(isRetweet){
+        retweetText = `<span>Retweeted by <a href='profile/${postedBy.Username}'>@${retweetBy}</a> </span>`
+    }
     return `<div class="post" data-id= ${postData._id}>
+                <div class='retweet-post-owner'>
+                    ${retweetText}
+                </div>
                 <div class="mainContentContainer">
                     <div class="userImageContainer">
                         <img src=${postedBy.profilePic}>
@@ -86,14 +142,17 @@ function createTweet(postData){
                         </div>
                         <div class="postFooter">
                             <div class="postButtonContainer">
-                                <button class="commentButton">
+                                <button class="commentButton blue">
                                     <i class="fa-regular fa-comment"></i>
+                                    <span class="LikeQuantity"></span>
                                 </button>
-                                <button class="retweetButton">
-                                    <i class="fa-solid fa-retweet"></i> 
+                                <button class="retweetButton ${retweetActiveClass}">
+                                    <i class="fa-solid fa-retweet"></i>
+                                    <span class="LikeQuantity">${postData.retweetUsers.length || ""}</span> 
                                 </button>
-                                <button class="likeButton">
+                                <button class="likeButton ${likedTweetActiveClass}">
                                     <i class="fa-regular fa-heart"></i>
+                                    <span class="LikeQuantity">${postData.likes.length || ""}</span>
                                 </button>
                             </div>
                         </div>

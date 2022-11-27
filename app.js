@@ -39,7 +39,9 @@ app.get('/', requireLogin, (req,res,next)=>{
     //payload object for the home route
     const payload = {
         page_title: "Home",
-        isLoggedInUser: req.session.user
+        isLoggedInUser: req.session.user,
+        isLoggedInUserJs: JSON.stringify(req.session.user)
+
     }
 
     res.status(200).render('home', payload)
