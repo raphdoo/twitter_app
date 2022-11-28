@@ -67,7 +67,7 @@ nav a:hover{
 
 }
 .textareaContainer{
-    padding: 1rem;
+    padding: 1rem 0.2rem;
     width: 100%;
 }
 .textareaContainer textarea{
@@ -188,6 +188,19 @@ nav a:hover{
 }
 .retweet-post-owner:hover{
     text-decoration: underline;
+}
+
+.modal-title{
+    color: black;
+}
+.modal-body .postFormContainer{
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.modal-body .postFormContainer textarea{
+    background-color: white;
+    color: black;
 }
 /* Widget Component */
 .widget{

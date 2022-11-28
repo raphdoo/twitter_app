@@ -1,9 +1,10 @@
 //disabling and enabling submit a tweet button
-$("#postText").keyup((event)=>{
+$("#postText, #replyText").keyup((event)=>{
     let textbox = $(event.target);
     let value = textbox.val().trim()
 
-    let submitTweet = $("#submitTweet")
+    let ismodal = textbox.parents('.modal').length == 1
+    let submitTweet = ismodal ? $("#submitReplyButton") : $("#submitTweet")
 
     if(value == ""){
         submitTweet.prop("disabled", true)
@@ -142,7 +143,7 @@ function createTweet(postData){
                         </div>
                         <div class="postFooter">
                             <div class="postButtonContainer">
-                                <button class="commentButton blue">
+                                <button data-toggle="modal" data-target="#replyModal">
                                     <i class="fa-regular fa-comment"></i>
                                     <span class="LikeQuantity"></span>
                                 </button>

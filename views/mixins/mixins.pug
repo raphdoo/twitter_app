@@ -6,3 +6,20 @@ mixin createPost(isLoggedInUser)
             textarea#postText(placeholder="What's happening")
             .buttonContainer 
                 button#submitTweet(disabled="") Tweet
+
+mixin createPostReply(isLoggedInUser)
+    #replyModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='replyModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#replyModalLabel.modal-title Reply
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    .postFormContainer 
+                        .userImageContainer.image-avatar
+                            img(src= isLoggedInUser.profilePic, alt="user profile picture", srcset="")
+                        .textareaContainer.postResponse 
+                            textarea#replyText(placeholder="What's happening")
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+                    button#submitReplyButton.btn.btn-primary(type='button', disabled="") Reply
