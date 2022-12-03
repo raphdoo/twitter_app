@@ -1,5 +1,5 @@
 //disabling and enabling submit a tweet button
-$("#postText, #replyText").keyup((event)=>{
+$("#postText, #replyTweet").keyup((event)=>{
     let textbox = $(event.target);
     let value = textbox.val().trim()
 
@@ -16,27 +16,63 @@ $("#postText, #replyText").keyup((event)=>{
 })
 
 //Handling submit tweet event
-$("#submitTweet").click((event)=>{
+$("#submitTweet,#submitReplyButton").click((event)=>{
 
-    let submitTweet = $(event.target)
-    let textbox = $("#postText")
+    let button = $(event.target)
+    let ismodal = button.parents('.modal').length == 1
+    let textbox = ismodal ? $("#replyTweet") : $("#postText")
 
     const data = {
         content: textbox.val()
     }
 
+    //Retrieve the id attribute from the button element
+    if(ismodal){
+        let id = button.data().id
+        if(id == null){
+            console.log(`id not set`);
+            return;
+        }
+        //add tweetid to the data sent to the server
+        data.replyTo = id;
+
+    }
+
     //Ajax call to send request to server and receive response from server
     $.post("/tweet", data, (postData, status, xhr)=>{
         
-        //pass the createTweet return value to html variable declared
-        const html = createTweet(postData);
-        $(".postContainer").prepend(html); //prepend the created post to the post container
+        if(postData.replyTo){
+            location.reload()
+        }
+        else{
+            //pass the createTweet return value to html variable declared
+            const html = createTweet(postData);
+            $(".postContainer").prepend(html); //prepend the created post to the post container
         
-        //clear the textbox and disable the tweet button
-        textbox.val(""); 
-        submitTweet.prop("disabled", true)
+            //clear the textbox and disable the tweet button
+            textbox.val(""); 
+            submitTweet.prop("disabled", true)
+        }
     })
 
+})
+
+$("#replyModal").on('show.bs.modal', (event)=>{
+    const button = $(event.relatedTarget);
+    const postId = getPostIdFromElement(button)
+
+    //set the id attribute to the button element
+    $('#submitReplyButton').data('id', postId)
+
+    $.get("/tweet/" + postId, (results)=>{
+        outputTweet(results, $("#originalPostContainer"))
+        
+    })
+})
+
+//clear modal container after dialog box is closed
+$("#replyModal").on('hidden.bs.modal', (event)=>{
+    $("#originalPostContainer").html("")
 })
 
 //Like a post
@@ -124,6 +160,16 @@ function createTweet(postData){
     if(isRetweet){
         retweetText = `<span>Retweeted by <a href='profile/${postedBy.Username}'>@${retweetBy}</a> </span>`
     }
+
+    let replyToFlag = ""
+    if(postData.replyTo){
+        if(!postData.replyTo._id) return alert("reply to is not populated")
+        if(!postData.replyTo.postedBy._id) return alert("reply to is not populated")
+
+        replyToUser = postData.replyTo.postedBy.Username
+        replyToFlag = `<span class= "replyToFlag">Replying to <a href='profile/${replyToUser}'>@${replyToUser}</a> </span>`
+    }
+
     return `<div class="post" data-id= ${postData._id}>
                 <div class='retweet-post-owner'>
                     ${retweetText}
@@ -138,20 +184,21 @@ function createTweet(postData){
                             <span class="username">@${postedBy.Username}<span>
                             <span class="date">${timestamp}</span>
                         </div>
+                        ${replyToFlag}
                         <div class="postBody">
                             <span>${postData.content}</span>
                         </div>
                         <div class="postFooter">
                             <div class="postButtonContainer">
-                                <button data-toggle="modal" data-target="#replyModal">
+                                <button class="tweetMessageBtnOption" data-toggle="modal" data-target="#replyModal">
                                     <i class="fa-regular fa-comment"></i>
                                     <span class="LikeQuantity"></span>
                                 </button>
-                                <button class="retweetButton ${retweetActiveClass}">
+                                <button class="retweetButton ${retweetActiveClass} tweetMessageBtnOption">
                                     <i class="fa-solid fa-retweet"></i>
                                     <span class="LikeQuantity">${postData.retweetUsers.length || ""}</span> 
                                 </button>
-                                <button class="likeButton ${likedTweetActiveClass}">
+                                <button class="likeButton ${likedTweetActiveClass} tweetMessageBtnOption">
                                     <i class="fa-regular fa-heart"></i>
                                     <span class="LikeQuantity">${postData.likes.length || ""}</span>
                                 </button>
@@ -197,4 +244,25 @@ function timeDifference(current, previous) {
     else {
         return Math.round(elapsed/msPerYear ) + ' years ago';   
     }
+}
+
+//Output tweet
+function outputTweet(results, container){
+    //empty the container first
+    container.html("")
+    
+    //making it compatible with query by ID
+    if(!Array.isArray(results)){
+        results = [results]
+    }
+
+    //create an html component for each tweet and append to the container
+    results.forEach((result)=>{
+       let tweetContainer = createTweet(result)
+       container.append(tweetContainer)
+    })
+    if(results == ""){
+        container.append("<span>No result found</span>")
+    }
+    
 }

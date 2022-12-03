@@ -21,4 +21,5 @@ function outputTweet(results, container){
     if(results == ""){
         container.append("<span>No result found</span>")
     }
+    
 }

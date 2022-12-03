@@ -1,7 +1,7 @@
 const express = require('express')
 const TweetRouter = express.Router()
 
-const { CreateTweet, getTweets, updateLikeButton, reTweet} = require('../Controllers/TweetController')
+const { CreateTweet, getTweets,getOneTweet, updateLikeButton, reTweet} = require('../Controllers/TweetController')
 
 TweetRouter.route('/')
     .get(getTweets)
@@ -12,5 +12,8 @@ TweetRouter.route('/:id/like')
 
 TweetRouter.route('/:id/retweet')
     .post(reTweet)
+
+TweetRouter.route('/:id')
+    .get(getOneTweet)
 
 module.exports = TweetRouter

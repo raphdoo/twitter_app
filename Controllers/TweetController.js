@@ -27,6 +27,11 @@ const CreateTweet = async (req, res, next)=>{
         postedBy: req.session.user
     }
 
+    //handling tweet reply text
+    if(req.body.replyTo){
+        postData.replyTo = req.body.replyTo
+    }
+
     let tweet = await Tweet.create(postData)
     tweet = await User.populate(tweet, {path: "postedBy"})
     .catch((err)=>{ console.log(err); return res.sendStatus(400);})
@@ -42,12 +47,26 @@ const getTweets = async (req, res, next) =>{
     let tweets = await Tweet.find({})
     .populate("retweetData")
     .populate("postedBy")
+    .populate("replyTo")
     .sort({createdAt: -1}) //starting from the latest
     .catch((err)=> {console.log(err); return res.sendStatus(400)})
 
+    tweets = await User.populate(tweets, {path: "replyTo.postedBy"})
     tweets = await User.populate(tweets, {path: "retweetData.postedBy"})
 
     res.status(200).send(tweets)
+}
+
+const getOneTweet = async (req, res, next) =>{
+    const postId = req.params.id
+    let tweet = await Tweet.findById(postId)
+    .populate("retweetData")
+    .populate("postedBy")
+    .catch((err)=> {console.log(err); return res.sendStatus(400)})
+
+    tweet = await User.populate(tweet, {path: "retweetData.postedBy"})
+
+    res.status(200).send(tweet)
 }
 
 //updating the like button
@@ -104,4 +123,4 @@ const reTweet = async (req, res, next)=>{
     res.status(200).send(tweet)
 }
 
-module.exports = {CreateTweet, getTweets, updateLikeButton, reTweet}
+module.exports = {CreateTweet, getTweets,getOneTweet, updateLikeButton, reTweet}

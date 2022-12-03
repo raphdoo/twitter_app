@@ -193,14 +193,36 @@ nav a:hover{
 .modal-title{
     color: black;
 }
+.modal{
+    color: black !important;
+}
+.modal .post{
+    padding-bottom: 0;
+}
+.modal a.displayName{
+    color: black !important;
+}
 .modal-body .postFormContainer{
     border: none;
     padding: 0;
     margin: 0;
 }
+.modal .postContentContainer{
+    padding: 0;
+    margin: 0.5rem 0;
+}
 .modal-body .postFormContainer textarea{
     background-color: white;
     color: black;
+}
+.modal .tweetMessageBtnOption{
+    background-color: white;
+}
+.replyToFlag, .replyToFlag a{
+    color: var(--secondary-text-color)
+}
+.replyToFlag a:hover{
+    text-decoration: underline;
 }
 /* Widget Component */
 .widget{

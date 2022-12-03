@@ -15,11 +15,12 @@ mixin createPostReply(isLoggedInUser)
                     h5#replyModalLabel.modal-title Reply
                     span(aria-hidden='true') &times;
                 .modal-body
+                    #originalPostContainer
                     .postFormContainer 
                         .userImageContainer.image-avatar
                             img(src= isLoggedInUser.profilePic, alt="user profile picture", srcset="")
                         .textareaContainer.postResponse 
-                            textarea#replyText(placeholder="What's happening")
+                            textarea#replyTweet(placeholder="Reply Tweet")
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') Close
                     button#submitReplyButton.btn.btn-primary(type='button', disabled="") Reply
