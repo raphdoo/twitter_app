@@ -224,6 +224,11 @@ nav a:hover{
 .replyToFlag a:hover{
     text-decoration: underline;
 }
+.post.largefontClass .postBody,
+.post.largefontClass .postFooter
+{
+    font-size: 1.3rem !important
+}
 /* Widget Component */
 .widget{
     

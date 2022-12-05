@@ -24,3 +24,14 @@ mixin createPostReply(isLoggedInUser)
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') Close
                     button#submitReplyButton.btn.btn-primary(type='button', disabled="") Reply
+mixin createDeletePost(isLoggedInUser)
+    #deletePostModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='deletePostModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#deletePostModalLabel.modal-title Delete 
+                .modal-body
+                    p You cannot delete this post
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+                    button#deletePostButton.btn.btn-primary(type='button') Delete

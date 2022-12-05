@@ -59,14 +59,31 @@ const getTweets = async (req, res, next) =>{
 
 const getOneTweet = async (req, res, next) =>{
     const postId = req.params.id
-    let tweet = await Tweet.findById(postId)
-    .populate("retweetData")
-    .populate("postedBy")
-    .catch((err)=> {console.log(err); return res.sendStatus(400)})
+    let postData = await getTweet({_id : postId});
+    postData = postData[0];
 
-    tweet = await User.populate(tweet, {path: "retweetData.postedBy"})
+    let result = {
+        postData: postData
+    }
 
-    res.status(200).send(tweet)
+    if(postData.replyTo !== undefined){
+        result.replyTo = postData.replyTo
+    }
+
+    result.replies = await getTweet({replyTo: postId})
+
+    res.status(200).send(result)
+}
+
+const getTweetPage = async (req, res, next) =>{
+    const payload = {
+        page_title: "View page",
+        isLoggedInUser: req.session.user,
+        isLoggedInUserJs: JSON.stringify(req.session.user),
+        postId : req.params.id
+    }
+
+    res.status(200).render("postPage", payload)
 }
 
 //updating the like button
@@ -123,4 +140,16 @@ const reTweet = async (req, res, next)=>{
     res.status(200).send(tweet)
 }
 
-module.exports = {CreateTweet, getTweets,getOneTweet, updateLikeButton, reTweet}
+async function getTweet(filter){
+    let tweets = await Tweet.find(filter)
+    .populate('postedBy')
+    .populate('retweetData')
+    .populate('replyTo')
+    .sort({createdAt: -1}) //starting from the latest
+
+    tweets = await User.populate(tweets, {path: "replyTo.postedBy"})
+    return await User.populate(tweets, {path: "retweetData.postedBy"})
+
+}
+
+module.exports = {CreateTweet, getTweets,getOneTweet, getTweetPage, updateLikeButton, reTweet}

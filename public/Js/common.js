@@ -49,9 +49,6 @@ $("#submitTweet,#submitReplyButton").click((event)=>{
             const html = createTweet(postData);
             $(".postContainer").prepend(html); //prepend the created post to the post container
         
-            //clear the textbox and disable the tweet button
-            textbox.val(""); 
-            submitTweet.prop("disabled", true)
         }
     })
 
@@ -65,7 +62,7 @@ $("#replyModal").on('show.bs.modal', (event)=>{
     $('#submitReplyButton').data('id', postId)
 
     $.get("/tweet/" + postId, (results)=>{
-        outputTweet(results, $("#originalPostContainer"))
+        outputTweet(results.postData, $("#originalPostContainer"))
         
     })
 })
@@ -126,27 +123,36 @@ $(document).on("click", ".retweetButton", (event)=>{
     console.log()
 })
 
+//post page
+$(document).on("click", ".post", (event)=>{
+    let element = $(event.target);
+    let postId = getPostIdFromElement(element)
+
+    if(postId && !element.is("button")){
+        window.location.href = "/tweet/page/"+ postId
+    }
+})
+
 //get to the root or parent element to retrieve the tweet id stored in the data-id
 function getPostIdFromElement(element) {
     let isRoot = element.hasClass('post');
     let rootElement = isRoot ? element : element.closest(".post");
-    const postId = rootElement.data().id;
+    let postId = rootElement.data().id;
 
     return postId;
 }
 
 
 //create the tweet container
-function createTweet(postData){
+function createTweet(postData, largeFont=false){
     // //handling retweeted tweets
-    if(postData == null) return alert("tweet is null");
-
     let isRetweet = postData.content == undefined;
 
     let retweetBy = isRetweet ? postData.postedBy.Username : null
 
     // //setting postData to retweet data if tweet is a retweet, else treat as postData if its a new post
     postData = isRetweet ? postData.retweetData[0] : postData;
+
 
     const postedBy = postData.postedBy
     const timestamp = timeDifference(new Date(), new Date(postData.createdAt))
@@ -155,22 +161,21 @@ function createTweet(postData){
     //adding active class to icons for styling
     const likedTweetActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
     const retweetActiveClass = postData.retweetUsers.includes(userLoggedIn._id) ? "active" : "";
-    console.log(retweetBy)
     let retweetText = ""
     if(isRetweet){
         retweetText = `<span>Retweeted by <a href='profile/${postedBy.Username}'>@${retweetBy}</a> </span>`
     }
 
     let replyToFlag = ""
-    if(postData.replyTo){
-        if(!postData.replyTo._id) return alert("reply to is not populated")
-        if(!postData.replyTo.postedBy._id) return alert("reply to is not populated")
-
+    if(postData.replyTo && postData.replyTo._id){
         replyToUser = postData.replyTo.postedBy.Username
         replyToFlag = `<span class= "replyToFlag">Replying to <a href='profile/${replyToUser}'>@${replyToUser}</a> </span>`
     }
 
-    return `<div class="post" data-id= ${postData._id}>
+    //creating largefont class to style the main tweet in the postPage
+    let largeFontClass = largeFont ? "largefontClass" : ""
+
+    return `<div class="post ${largeFontClass}" data-id= ${postData._id}>
                 <div class='retweet-post-owner'>
                     ${retweetText}
                 </div>
@@ -265,4 +270,27 @@ function outputTweet(results, container){
         container.append("<span>No result found</span>")
     }
     
+}
+
+function outputTweetPlusReplies(results, container){
+    //empty the container first
+    container.html("")
+    
+    //checking tweet has replies
+    if(results.replyTo !== undefined && results.replyTo._id !== undefined){
+        let html = createTweet(results.replyTo, true)
+        container.append(html)
+    }
+
+    let mainPostHtml = createTweet(results.postData)
+    container.append(mainPostHtml);
+
+    //create an html component for each tweet and append to the container
+    results.replies.forEach((reply)=>{
+       let repliesContainer = createTweet(reply)
+       container.append(repliesContainer)
+    })
+    if(results == ""){
+        container.append("<span>No result found</span>")
+    }
 }

@@ -1,0 +1,14 @@
+extends pagelayout/main-layout.pug
+
+block content
+    script.
+        //assigning postId to a variable from the 
+        //payload received from the server, single quote to show it as string
+        let postId = '!{postId}'
+    .postContainer
+
+    +createPostReply(isLoggedInUser)
+
+
+block scripts 
+    script(src="/Js/postPage.js") 

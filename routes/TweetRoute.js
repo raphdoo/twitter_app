@@ -1,7 +1,9 @@
 const express = require('express')
 const TweetRouter = express.Router()
+const { requireLogin } = require('../middleware/authenticate')
 
-const { CreateTweet, getTweets,getOneTweet, updateLikeButton, reTweet} = require('../Controllers/TweetController')
+
+const { CreateTweet, getTweets,getOneTweet,getTweetPage,  updateLikeButton, reTweet} = require('../Controllers/TweetController')
 
 TweetRouter.route('/')
     .get(getTweets)
@@ -15,5 +17,8 @@ TweetRouter.route('/:id/retweet')
 
 TweetRouter.route('/:id')
     .get(getOneTweet)
+
+TweetRouter.route('/page/:id')
+    .get(requireLogin, getTweetPage)
 
 module.exports = TweetRouter
