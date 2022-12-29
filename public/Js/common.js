@@ -172,6 +172,13 @@ function createTweet(postData, largeFont=false){
         replyToFlag = `<span class= "replyToFlag">Replying to <a href='profile/${replyToUser}'>@${replyToUser}</a> </span>`
     }
 
+    let button = ""
+    if(postData.postedBy._id == userLoggedIn._id){
+        button = `<button data-id= ${postData._id} data-toggle="modal" data-target="#deletePostModal">
+        <i class="fas fa-times"></i>
+        </button>`
+    }
+
     //creating largefont class to style the main tweet in the postPage
     let largeFontClass = largeFont ? "largefontClass" : ""
 
@@ -186,8 +193,9 @@ function createTweet(postData, largeFont=false){
                     <div class="postContentContainer">
                         <div class="header">
                             <a href="/profile/${postedBy.Username}" class="displayName"> ${postedBy.Firstname} </a>
-                            <span class="username">@${postedBy.Username}<span>
+                            <span class="username">@${postedBy.Username}</span>
                             <span class="date">${timestamp}</span>
+                            ${button}
                         </div>
                         ${replyToFlag}
                         <div class="postBody">
@@ -239,7 +247,12 @@ function timeDifference(current, previous) {
     }
 
     else if (elapsed < msPerMonth) {
-        return Math.round(elapsed/msPerDay) + ' days ago';   
+        result = Math.round(elapsed/msPerDay)
+        if(result ===1){
+            return result + ' day ago';
+        }else{
+            return result + ' days ago'; 
+        }
     }
 
     else if (elapsed < msPerYear) {

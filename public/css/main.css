@@ -229,6 +229,22 @@ nav a:hover{
 {
     font-size: 1.3rem !important
 }
+
+.postContentContainer .header{
+    display: flex;
+}
+
+.postContentContainer .header .date{
+    flex:1;
+}
+.postContentContainer .header button{
+    background-color: var(--primary-background-color);
+    color: white;
+}
+.postContentContainer .header button:hover{
+    background-color: var(--secondary-background-color);
+}
+
 /* Widget Component */
 .widget{
     
