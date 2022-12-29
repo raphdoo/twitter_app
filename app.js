@@ -1,14 +1,16 @@
-const express = require('express')
-const app = express()
-const path = require('path')
-const bodyParser = require('body-parser')
-const Database = require("./database")
-const config = require('./config')
-const session = require('express-session')
+const express = require('express');
+const app = express();
+const path = require('path');
+const bodyParser = require('body-parser');
+const Database = require("./database");
+const config = require('./config');
+const session = require('express-session');
 
-const { requireLogin } = require('./middleware/authenticate')
-const UserRoute = require('./routes/UserRoute')
-const TweetRoute = require('./routes/TweetRoute')
+const { requireLogin } = require('./middleware/authenticate');
+const UserRoute = require('./routes/UserRoute');
+const TweetRoute = require('./routes/TweetRoute');
+const ProfileRoute = require('./routes/TweetRoute');
+
 
 const port = config.port
 

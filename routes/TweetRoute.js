@@ -3,7 +3,7 @@ const TweetRouter = express.Router()
 const { requireLogin } = require('../middleware/authenticate')
 
 
-const { CreateTweet, getTweets,getOneTweet,getTweetPage,  updateLikeButton, reTweet} = require('../Controllers/TweetController')
+const { CreateTweet, getTweets,getOneTweet,getTweetPage,  updateLikeButton, reTweet, deleteTweet} = require('../Controllers/TweetController')
 
 TweetRouter.route('/')
     .get(getTweets)
@@ -17,6 +17,7 @@ TweetRouter.route('/:id/retweet')
 
 TweetRouter.route('/:id')
     .get(getOneTweet)
+    .delete(deleteTweet)
 
 TweetRouter.route('/page/:id')
     .get(requireLogin, getTweetPage)

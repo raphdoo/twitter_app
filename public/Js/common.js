@@ -72,6 +72,34 @@ $("#replyModal").on('hidden.bs.modal', (event)=>{
     $("#originalPostContainer").html("")
 })
 
+$("#deletePostModal").on('show.bs.modal', (event)=>{
+    const button = $(event.relatedTarget);
+    const postId = getPostIdFromElement(button);
+
+    //set the id attribute to the button element
+    $('#deletePostButton').data('id', postId);
+
+    
+});
+
+
+$("#deletePostButton").click((event)=>{
+    let postId = $(event.target).data("id");
+    //ajax call to delete posts
+    $.ajax({
+        url: `/tweet/${postId}`,
+        type: "DELETE",
+        success: ((postData, status, xhr)=>{       
+            if(xhr.status != 202){
+                alert('tweet not found');
+                return;
+            }
+            location.reload();
+        })
+
+    })
+})
+
 //Like a post
 // Handling post like button. since the button is dynamically created,
 // it is required for the document to load before listening to the click event.
@@ -205,11 +233,11 @@ function createTweet(postData, largeFont=false){
                             <div class="postButtonContainer">
                                 <button class="tweetMessageBtnOption" data-toggle="modal" data-target="#replyModal">
                                     <i class="fa-regular fa-comment"></i>
-                                    <span class="LikeQuantity"></span>
+                                    <span class="commentQuantity"></span>
                                 </button>
                                 <button class="retweetButton ${retweetActiveClass} tweetMessageBtnOption">
                                     <i class="fa-solid fa-retweet"></i>
-                                    <span class="LikeQuantity">${postData.retweetUsers.length || ""}</span> 
+                                    <span class="retweetQuantity">${postData.retweetUsers.length || ""}</span> 
                                 </button>
                                 <button class="likeButton ${likedTweetActiveClass} tweetMessageBtnOption">
                                     <i class="fa-regular fa-heart"></i>

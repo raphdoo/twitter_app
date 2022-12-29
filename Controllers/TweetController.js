@@ -152,4 +152,21 @@ async function getTweet(filter){
 
 }
 
-module.exports = {CreateTweet, getTweets,getOneTweet, getTweetPage, updateLikeButton, reTweet}
+const deleteTweet = async (req, res, next)=>{
+    const id = req.params.id;
+    const tweet = await Tweet.findByIdAndDelete(id)
+    .catch((err)=>{
+        console.log(err);
+        res.sendStatus(400);
+    })
+    res.sendStatus(202);
+
+}
+
+module.exports = {CreateTweet, 
+    getTweets,
+    getOneTweet, 
+    getTweetPage, 
+    updateLikeButton, 
+    reTweet,
+    deleteTweet}
